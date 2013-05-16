@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PrimeStore
@@ -10,7 +11,7 @@ namespace PrimeStore
     {
         public static void Main(string[] args)
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 3; i++)
             {
                 Parallel.For(0, Store.MAX_VALUE, (number) =>
                     {

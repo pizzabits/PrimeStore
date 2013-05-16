@@ -8,15 +8,15 @@ namespace PrimeStore
 {
     public sealed class Store
     {
-        public const Int32 MAX_VALUE = 10000 - 2;
+        public const Int32 MAX_VALUE = 100000 - 2;
         private static Store _instance;
         private static object syncRoot = new Object();
 
-        private Dictionary<Int32, Boolean> _primes;
+        private readonly Dictionary<Int32, Boolean> _primes;
 
         private Store()
         {
-            _primes = new Dictionary<int, bool>(MAX_VALUE);
+            _primes = new Dictionary<int, bool>();
 
             IEnumerable<int> numbers = Enumerable.Range(2, MAX_VALUE);
 
@@ -50,6 +50,8 @@ namespace PrimeStore
 
         public void BuyNumber(Int32 number, Action<NumberType> callback)
         {
+            // no lock is needed here since just checking if a number is prime
+            // and its a readonly operation.
             if (!_primes.ContainsKey(number))
             {
                 callback(NumberType.NotExist);
@@ -64,6 +66,8 @@ namespace PrimeStore
         {
             Boolean bought = false;
 
+            // the number is prime, then obtain exclusive access
+            // to the dictionary and try to buy it.
             lock (_primes)
             {
                 if (_primes[number] == false)

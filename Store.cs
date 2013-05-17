@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PrimeStore
@@ -48,6 +49,10 @@ namespace PrimeStore
             }
         }
 
+        // The delegate must have the same signature as the method 
+        // it will call asynchronously. 
+        private delegate void AsyncMethodCaller(Int32 number, Action<NumberType> callback);
+
         public void BuyNumber(Int32 number, Action<NumberType> callback)
         {
             // no lock is needed here since just checking if a number is prime
@@ -58,7 +63,11 @@ namespace PrimeStore
             }
             else
             {
-                BuyPrime(number, callback);
+                // Create the delegate.
+                AsyncMethodCaller caller = new AsyncMethodCaller(BuyPrime);
+
+                // Initiate the asychronous call.
+                caller.BeginInvoke(number, callback, null, null);
             }
         }
 

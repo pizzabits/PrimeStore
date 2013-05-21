@@ -1,18 +1,38 @@
 PrimeStore
 ==========
 
-A program that simulates a store for prime numbers.
-A user comes in the store and ask to buy a number.
-if the number is a prime number, then either its available for sale,
-or it isn't available since it was soled before.
-if the number isn't prime, then it doesn't exist in the system.
+Simulator of a prime numbers store.
 
-The store will contain as much primes numbers, for example MAX_VALUE = Int32.MaxValue.
+Users enter the store and ask to buy a number.
 
-Although, this way it would take a long time to calculate, since the method used for generating
-prime numbers is the Sieve of Eratosthenes.
+If the number asked is a prime number,
 
-This implementation consist of a dictionary of pre-calculated prime numbers,
-inside a singleton class.
-The store supports concurrent calls, and doesn't delay the buyers (i.e asynchrounous calls).
+1.1. then it's either available for sale
 
+1.2. or was purchased earlier, hence not available for sale.
+
+If the number asked is not a prime number, then it doesn't exist.
+
+Let us assume that the store contains the maximum possible number of primes
+
+that could be represented by a primitive type
+
+(in the following implementation I assume that the largest prime number isn't larger than
+
+Int32's MaxValue, and to actually run this in a reasonable time, I set a MAX_VALUE constant to 100000).
+
+The store must handle concurrent calls.
+
+Buying should be fast as possible!
+
+When the store opens for business, it should already contain the numbers for sale.
+
+Users cannot be blocked by shopping for numbers, nor by other buyers.
+
+Example: UserA asks to purchase a number and then UserB arrives and asks to purchase a number,
+
+then UserB won't need to wait until the system's dealt with UserA's transaction.
+
+So when UserA's transaction finishes, a response will be delivered to UserA,
+
+then UserB's transaction will start and once finished a response will be delivered to UserB.
